@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/images/title_logo.png" type="image/x-icon">
+  <title th:text="'WebDevSecurityWar | sign-up'"></title>
+  <link rel="stylesheet" href="/css/default.css"/>
+  <link rel="stylesheet" href="/css/signup.css"/>
+</head>
+<body>
+<h1>
+  <img src="/images/signup3.png" alt="회원가입" />
+</h1>
+<div class="log-container">
+  <form th:method="post" th:action="@{/auth/signup}">
+    <p><input type="text" name="id" th:attr="placeholder='ID'"  required />
+    </p>
+    <p><input type="password" name="password" th:attr="placeholder='Password'" required />
+    <p><input type="text" name="nickname" th:attr="placeholder='NickName'" required />
+    <p><input type="email" name="email" th:attr="placeholder='Email'" required />
+    <p> <button type="submit" th:text="'submit'"></button></p>
+  </form>
+</div>
+</body>
+</html>

@@ -18,7 +18,7 @@ public class SecurityConfig {
                         .usernameParameter("id")
                         .passwordParameter("pw")
                         .loginPage("/login")
-                        .defaultSuccessUrl("/"))
+                        .defaultSuccessUrl("/welcome"))
                 .build();
     }
 
