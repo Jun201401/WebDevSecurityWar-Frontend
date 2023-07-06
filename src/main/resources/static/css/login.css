@@ -1,0 +1,33 @@
+h1 {
+    margin-top: 120px;
+}
+
+input {
+    margin-top: 15px;
+    width: 200px;
+    height: 40px;
+    border-radius: 15px;
+    padding-left: 20px;
+}
+
+button {
+    background-color: #014421;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 15px;
+    margin-top: 15px;
+    height: 35px;
+    width: 140px;
+    transition: background-color 0.3s; /* 부드러운 색상 전환 효과 */
+}
+
+button:hover {
+    background-color: #3CB371;
+}
+
+.logo {
+    width: 280px;
+    height: auto;
+}
