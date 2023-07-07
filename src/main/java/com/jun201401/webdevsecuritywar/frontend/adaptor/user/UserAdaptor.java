@@ -1,6 +1,7 @@
 package com.jun201401.webdevsecuritywar.frontend.adaptor.user;
 
 import com.jun201401.webdevsecuritywar.frontend.config.UrlProperties;
+import com.jun201401.webdevsecuritywar.frontend.dto.user.GetUserDto;
 import com.jun201401.webdevsecuritywar.frontend.dto.user.PostUserDto;
 import com.jun201401.webdevsecuritywar.frontend.dto.user.RespUserDto;
 import com.jun201401.webdevsecuritywar.frontend.util.DefaultHttpHeader;
@@ -21,6 +22,18 @@ public class UserAdaptor {
     private final RestTemplate restTemplate;
     private final UrlProperties urlProperties;
     private final PasswordEncoder passwordEncoder;
+
+    public GetUserDto getUser(String userId) {
+        HttpEntity<String> requestEntity = new HttpEntity<>(DefaultHttpHeader.getHeader());
+
+        ResponseEntity<GetUserDto> exchange =
+                restTemplate.exchange(urlProperties.getUser(),
+                        HttpMethod.GET,
+                        requestEntity,
+                        new ParameterizedTypeReference<>() {
+                        }, userId);
+        return exchange.getBody();
+    }
 
     public RespUserDto createUser(PostUserDto postUserDto) {
             postUserDto.setPassword(passwordEncoder.encode(postUserDto.getPassword()));

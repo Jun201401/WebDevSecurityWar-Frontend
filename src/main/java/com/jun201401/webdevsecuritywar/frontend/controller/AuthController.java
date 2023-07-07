@@ -4,10 +4,8 @@ import com.jun201401.webdevsecuritywar.frontend.dto.user.PostUserDto;
 import com.jun201401.webdevsecuritywar.frontend.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -28,8 +26,17 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public String doSignUp(@ModelAttribute @Valid PostUserDto postUserDto) {
+    public String doSignUp(@ModelAttribute @Valid PostUserDto postUserDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors() || !postUserDto.getEmailVerified()) {
+            return "auth/signup";
+        }
         authService.createUser(postUserDto);
         return "redirect:/auth/login";
+    }
+
+    @PostMapping("/verifyEmail")
+    @ResponseBody
+    public boolean verifyEmail(@RequestParam String email, @RequestParam String code) {
+        return authService.verifyEmail(email, code);
     }
 }
