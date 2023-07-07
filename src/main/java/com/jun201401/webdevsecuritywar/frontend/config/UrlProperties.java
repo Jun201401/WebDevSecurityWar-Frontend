@@ -10,6 +10,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class UrlProperties {
     private String url;
 
+    public String getUser() {
+        return url + "/users/{userId}";
+    }
     public String createUser() {
         return url + "/users";
     }

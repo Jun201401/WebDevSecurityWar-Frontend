@@ -1,25 +1,68 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" href="/images/title_logo.png" type="image/x-icon">
-  <title th:text="'WebDevSecurityWar | sign-up'"></title>
-  <link rel="stylesheet" href="/css/default.css"/>
-  <link rel="stylesheet" href="/css/signup.css"/>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/images/title_logo.png" type="image/x-icon">
+    <title th:text="'WebDevSecurityWar | sign-up'"></title>
+    <link rel="stylesheet" href="/css/default.css"/>
+    <link rel="stylesheet" href="/css/signup.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function sendNumber() {
+            $("#mail_number").css("display","block");
+            $.ajax({
+                url:"/mail",
+                type:"post",
+                crossDomain: true,
+                headers: {  'Access-Control-Allow-Origin': 'http://The web site allowed to access' },
+                dataType:"json",
+                data:{"mail" : $("#mail").val()},
+                success: function(data) {
+                    alert("인증번호가 발송되었습니다.");
+                    $("#Confirm").attr("value",data);
+                },
+            });
+        }
+
+        function confirmNumber() {
+            var number1 = $("#number").val();
+            $.ajax({
+                url: "/mail/confirm",
+                type: "post",
+                data: { "mail": $("#mail").val(), "inputNumber": number1 },
+                success: function(data) {
+                    if (data) {
+                        alert("인증이 완료되었습니다.");
+                        $("#emailVerified").val("true");
+                        $("#submitBtn").prop("disabled", false);
+                    } else {
+                        alert("잘못된 번호입니다.");
+                        $("#submitBtn").prop("disabled", true);
+                    }
+                },
+            });
+        }
+    </script>
 </head>
 <body>
 <h1>
-  <img src="/images/signup3.png" alt="회원가입" />
+    <img src="/images/signup3.png" alt="회원가입" />
 </h1>
 <div class="log-container">
-  <form th:method="post" th:action="@{/auth/signup}">
-    <p><input type="text" name="id" th:attr="placeholder='ID'"  required />
-    </p>
-    <p><input type="password" name="password" th:attr="placeholder='Password'" required />
-    <p><input type="text" name="nickname" th:attr="placeholder='NickName'" required />
-    <p><input type="email" name="email" th:attr="placeholder='Email'" required />
-    <p> <button type="submit" th:text="'submit'"></button></p>
-  </form>
+    <form th:method="post" th:action="@{/auth/signup}">
+        <p><input type="text" name="id" th:attr="placeholder='ID'"  required /></p>
+        <p><input type="password" name="password" th:attr="placeholder='Password'" required /></p>
+        <p><input type="text" name="nickname" th:attr="placeholder='NickName'" required /></p>
+        <p><input type="email" name="email" id="mail" th:attr="placeholder='Email'" required />
+        <button type="button" id="sendBtn" name="sendBtn" onclick="sendNumber()">인증번호</button>
+        </p>
+        <p id="mail_number" name="mail_number" style="display: none">
+            <input type="text" name="number" id="number" style="width:250px; margin-top: -10px" placeholder="인증번호 입력">
+            <button type="button" name="confirmBtn" id="confirmBtn" onclick="confirmNumber()">이메일 인증</button>
+        </p>
+        <input type="hidden" id="emailVerified" name="emailVerified" value="false">
+        <p> <button type="submit" id="submitBtn" th:text="'submit'" disabled></button></p>
+    </form>
 </div>
 </body>
 </html>
